@@ -1,10 +1,15 @@
 import React from "react";
+import styled from "styled-components";
 //import PropTypes from "prop-types";
 
 function Home(){
+    var date = ()=>{
+        var showDate = new Date();
+        var displayDate=showDate.getDate()
+    }
 
     return (
-        <div>Hello</div>
+    <h1>Tasks to Start:</h1>
     )
 }
 

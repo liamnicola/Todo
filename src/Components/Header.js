@@ -11,9 +11,11 @@ const StyledNav = styled.nav`
       align-items: center;
       font-size: 20pt;
       list-style: none;
-      background-color: grey;
+      background-color: #282828;
       padding-top: 0;
-    }
+      margin: 0;
+      height: 50px;
+      a:visited: color: #00FF00;
   `;
 
 
