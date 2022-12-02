@@ -12,6 +12,9 @@ body {
 h1 {
     text-align: center
 }
+
+:-webkit-any-link {
+}
 `
 
 export default GlobalStyles;

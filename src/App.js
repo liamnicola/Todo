@@ -14,6 +14,13 @@ import Profile from "./Views/Profile"
 import Schedule from "./Views/Schedule"
 import Create from "./Views/Create"
 
+const todo = [
+  {
+    due: "Jan 11 2022",
+    name: "web apps"
+  }
+]
+
 
 function App() {
   return (
@@ -24,7 +31,7 @@ function App() {
           <Header />
           <Switch>
                   <Route exact path="/">
-                    <Home />
+                    <Home Todos={todo}/>
                   </Route>
                   <Route path="/Schedule">
                     <Schedule />

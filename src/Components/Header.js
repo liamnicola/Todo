@@ -15,9 +15,12 @@ const StyledNav = styled.nav`
       padding-top: 0;
       margin: 0;
       height: 50px;
-      a:visited: color: #00FF00;
+    }
+    a:-webkit-any-link {
+        text-decoration: none;
+        color: white
+    }
   `;
-
 
 function Header(props){
     return(
