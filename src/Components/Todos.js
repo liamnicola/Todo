@@ -15,16 +15,34 @@ const StyledRootDiv = styled.div`
 
 const StyledP = styled.p`
     align-items: center;
+    margin-bottom- 100px;
+
 `
 
-function Todos(props){
-    const {due, todo} = props;
+/*function timeLeft(due, props){
+    const date = new Date().getDate();
+    const countdown = due
 
+    FIND OUT HOW TO CONVERT DATES TO BE SUBTRACTED
+
+    time = date - countdown  THEN CONVERT TO DAYS 
+
+
+}
+*/
+function Todos(props){
+
+    const {todo} = props;
+    const singleTodo = todo.map((e) => <StyledRootDiv key={e.id}>{e.name + ' ' + e.due}</StyledRootDiv>)
     return (
-        <StyledRootDiv>
-        <StyledP>{todo} due on: {due}</StyledP>
-        </StyledRootDiv>
+        
+        <div>{singleTodo}</div>
+        
     )
 }
+
+Todos.propTypes = {
+    todo: PropTypes.array.isRequired
+  };
 
 export default Todos;

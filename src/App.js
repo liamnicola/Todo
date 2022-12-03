@@ -16,9 +16,21 @@ import Create from "./Views/Create"
 
 const todo = [
   {
-    due: "Jan 11 2022",
-    name: "web apps"
-  }
+    due: "01/11/2022",
+    name: "Web Apps"
+  },
+  {
+    due: "Feb 17 2022",
+    name: "Data Science"
+  },
+  {
+    due: "Mar 27 2022",
+    name: "UX"
+  },
+  {
+    due: "June 4 2022",
+    name: "Revision"
+  },
 ]
 
 
@@ -31,7 +43,7 @@ function App() {
           <Header />
           <Switch>
                   <Route exact path="/">
-                    <Home Todos={todo}/>
+                    <Home todo={todo}/>
                   </Route>
                   <Route path="/Schedule">
                     <Schedule />

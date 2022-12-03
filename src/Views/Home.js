@@ -11,16 +11,14 @@ import Todos from "../Components/Todos"
 
 function Home(props){
     const date = new Date().toLocaleDateString();
-    const day = new Date().getDay();
-    const month = new Date().getMonth();
-    const year = new Date().getFullYear();
+    //const r = date.setDate()
     const {todo} = props;
     return (
         <div>
             <h1>{date}</h1>
             <h1>Tasks to Start:</h1>
 
-            <Todos due = {date} todo={"web apps"}/>
+            <Todos todo={todo}/>
 
 
 
