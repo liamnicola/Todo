@@ -1,14 +1,18 @@
 import React from "react";
 import CreateTodo from "../Components/CreateTodo";
 
-function Profile() {
+const handleSubmit = (todo) => {
+  console.log(todo);
+};
+
+const Create = () => {
   return (
     <div>
       <h1>Create a Task</h1>
 
-      <CreateTodo />
+      <CreateTodo onSubmit={handleSubmit} />
     </div>
   );
-}
+};
 
-export default Profile;
+export default Create;

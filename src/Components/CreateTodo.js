@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const StyledForm = styled.form`
   display: block;
@@ -14,18 +17,43 @@ const StyledForm = styled.form`
 `;
 
 function CreateTodo(props) {
+  const { onSubmit } = props;
+  const schema = yup.object().shape({
+    name: yup.string().required("you must enter a name"),
+    date: yup.string().required("date is required"),
+  });
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    watch,
+  } = useForm({ resolver: yupResolver(schema) });
+
+  const formValues = watch();
+  let todoData = {
+    name: "",
+    date: "",
+  };
+
+  useEffect(() => {
+    todoData.name = formValues.name;
+    todoData.date = formValues.date;
+  });
+
+  const onFormSubmit = (data) => {
+    onSubmit({ ...data, ...todoData });
+  };
   return (
-    <StyledForm>
-      <label for="name">Name</label>
-      <br />
-      <input type="text" id="name" placeholder="Enter Topic" />
-      <br />
-      <label for="due">Due Date</label>
-      <br />
-      <input type="text" id="due" placeholder="Enter Due Date" />
-      <br />
-      <button type="submit">Submit</button>
-    </StyledForm>
+    <div>
+      <form onSubmit={handleSubmit(onFormSubmit)}>
+        <input {...register("name", { required: true })} />
+        <p>{errors.name?.type === "required" && "Todo name Required"}</p>
+        <input {...register("date", { required: true })} />
+        <p>{errors.date?.type === "required" && "Date is Required"}</p>
+        <input type="submit" />
+      </form>
+    </div>
   );
 }
 
