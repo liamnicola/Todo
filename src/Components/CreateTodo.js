@@ -39,10 +39,10 @@ function CreateTodo(props) {
   useEffect(() => {
     todoData.name = formValues.name;
     todoData.date = formValues.date;
-  });
+  }, [todoData]);
 
   const onFormSubmit = (data) => {
-    onSubmit({ ...data, ...todoData });
+    onSubmit({ ...data, ...todoData});
   };
   return (
     <div>

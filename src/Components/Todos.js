@@ -35,12 +35,12 @@ function Todos(props) {
   const singleTodo = todo.map((e) => (
     <StyledRootDiv key={e.id}>{e.name + " " + e.due}</StyledRootDiv>
   ));
-  const due = props.todo.due;
+  const due = todo.due;
   const date = new Date();
   const countdown = due - date;
   return (
     <div>
-      {singleTodo} + {countdown}
+      {singleTodo}
     </div>
   );
 }

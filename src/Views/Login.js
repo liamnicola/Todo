@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Form from "../Components/LoginForm";
-import Tile from "../Components/Tile";
 import useAuth from "../services/firebase/useAuth";
+import Form from "../Components/LoginForm";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -13,16 +12,6 @@ const StyledWrapper = styled.div`
   min-width: 100vw;
 `;
 
-const StyledTile = styled(Tile)`
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  justify-content: center;
-  grid-row-gap: 20px;
-  width: 100%;
-  @media (min-width: 600px) {
-    width: 30%;
-  }
-`;
 
 const StyledHeading = styled.h2`
   text-align: center;
@@ -32,10 +21,20 @@ const StyledHeading = styled.h2`
 const StyledLink = styled(Link)`
   text-align: center;
 `;
+const StyledForm = styled.form`
+  display: block;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+  margin: 0.9vw 0;
+  border: 0;
+  border-radius: 5px;
+  font-size: 20px;
+`;
 
 function Login(props) {
 	const [serverErrorMessage, setServerErrorMessage] = useState();
-	const { signInEmailUser } = useAuth();
+	const { signInEmailUser, signInGoogleUser } = useAuth();
 
 	const handleEmailSubmit = async (data) => {
 		try {
@@ -48,11 +47,8 @@ function Login(props) {
 
 	const handleSocialSubmit = async (method) => {
 		try {
-			if (method === "facebook") {
-				console.log('facebook');
-			}
 			if (method === "google") {
-				console.log('google');
+				await signInGoogleUser();
 			}
 		} catch (error) {
 			console.log("error");
@@ -60,7 +56,7 @@ function Login(props) {
 	};
 	return (
 		<StyledWrapper>
-			<StyledTile>
+			<div>
 				<StyledHeading>Login With </StyledHeading>
 				<Form
 					buttonText="LOGIN"
@@ -69,7 +65,7 @@ function Login(props) {
 					onSocialSubmit={handleSocialSubmit}
 				/>
 				<StyledLink to="/join"> Not a member - Join </StyledLink>
-			</StyledTile>
+			</div>
 		</StyledWrapper>
 	);
 }

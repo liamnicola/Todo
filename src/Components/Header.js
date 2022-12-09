@@ -2,6 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import useAuth from "../services/firebase/useAuth";
 
 const StyledNav = styled.nav`
     ul {  
@@ -23,6 +24,8 @@ const StyledNav = styled.nav`
   `;
 
 function Header(props){
+
+    const { user, signUserOut } = useAuth();
     return(
         <div>
             <StyledNav>
@@ -31,7 +34,7 @@ function Header(props){
                     <li><Link to="/Schedule">Schedule</Link></li>
                     <li><Link to="/Create">Create Task</Link></li>
                     <li><Link to="/Profile">Profile</Link></li>
-                    
+                    <li>{user.displayName || user.email} <span onClick={signUserOut}>(Logout)</span></li>
                 </ul>
             </StyledNav>
         </div>
