@@ -1,16 +1,14 @@
 import React from "react";
-import CreateTodo from "../Components/CreateTodo";
+import TodoForm from "../Components/CreateTodo";
+import Todos from "../Components/Todos";
 
-const handleSubmit = (todo) => {
-  console.log(todo);
-};
-
-const Create = () => {
+const Create = (props) => {
+  const { todo } = props;
   return (
     <div>
       <h1>Create a Task</h1>
 
-      <CreateTodo onSubmit={handleSubmit} />
+      <TodoForm />
     </div>
   );
 };

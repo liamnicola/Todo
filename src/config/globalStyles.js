@@ -15,6 +15,6 @@ h1 {
 
 :-webkit-any-link {
 }
-`
+`;
 
 export default GlobalStyles;

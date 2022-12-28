@@ -20,25 +20,6 @@ import Create from "./Views/Create";
 import Login from "./Views/Login";
 import Join from "./Views/Join";
 
-const todo = [
-  {
-    due: "01/11/2022",
-    name: "Web Apps",
-  },
-  {
-    due: "Feb 17 2022",
-    name: "Data Science",
-  },
-  {
-    due: "Mar 27 2022",
-    name: "UX",
-  },
-  {
-    due: "June 4 2022",
-    name: "Revision",
-  },
-];
-
 function Protected({ authenticated, children, ...rest }) {
   return (
     <Route
@@ -62,6 +43,7 @@ function Protected({ authenticated, children, ...rest }) {
 function App() {
   initializeApp(firebaseConfig);
   const location = useLocation();
+  const [todo, setTodos] = useState("");
   const { isAuthenticated, createEmailUser, signInEmailUser, signUserOut } =
     useAuth();
   const history = useHistory();
@@ -91,7 +73,7 @@ function App() {
           </Route>
           <Switch>
             <Protected authenticated={isAuthenticated} exact path="/">
-              <Home todo={todo} />
+              <Home />
             </Protected>
 
             <Protected authenticated={isAuthenticated} exact path="/Schedule">
