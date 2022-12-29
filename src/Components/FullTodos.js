@@ -90,7 +90,7 @@ const StyledButton = styled.button`
   return <div></div>;
 }; */
 
-function Todos() {
+function FullTodos() {
   const db = getFirestore();
   const { user } = useAuth();
   const { getTodos } = useTodo();
@@ -129,8 +129,6 @@ function Todos() {
   const handleEdit = (id) => {
     console.log("edit", id);
   };
-
-  const limitSorted = sorted.slice(0, 3);
   /*const singleTodo = todos.map((e) => (
     <StyledRootDiv>
       <h3>{e.name}</h3> <br />
@@ -143,7 +141,7 @@ function Todos() {
   //const countdown = moment(date).subtract(due1).toDate;
   return (
     <div>
-      {limitSorted.map((e) => (
+      {sorted.map((e) => (
         <StyledRootDiv>
           <h3>{e.name}</h3> <br />
           <p>{e.date}</p>
@@ -155,8 +153,8 @@ function Todos() {
   );
 }
 
-Todos.propTypes = {
+FullTodos.propTypes = {
   todo: PropTypes.array.isRequired,
 };
 
-export default Todos;
+export default FullTodos;

@@ -1,6 +1,5 @@
-import { getCountFromServer } from "firebase/firestore";
 import React, { useEffect } from "react";
-import Todos from "../Components/Todos";
+import FullTodos from "../Components/FullTodos";
 import useTodo from "../services/firebase/useTodo";
 
 function Schedule(props) {
@@ -43,7 +42,7 @@ function Schedule(props) {
     <div>
       <h1>Full Schedule:</h1>
       <h2> You Have {count}</h2>
-      <Todos />
+      <FullTodos />
     </div>
   );
 }

@@ -12,16 +12,42 @@ import {
   getDocs,
   getFirestore,
 } from "firebase/firestore";
+import { create } from "yup/lib/Reference";
 
 const StyledForm = styled.form`
+  background: rgb(63, 94, 251);
+  background: radial-gradient(
+    circle,
+    rgba(63, 94, 251, 1) 0%,
+    rgba(252, 70, 107, 1) 100%
+  );
   display: block;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+  align-content: center;
+  width: 50%;
   padding: 0.5rem 0.8rem 0.5rem 0.8rem;
   margin: 0.9vw 0;
   border: 0;
   border-radius: 5px;
   font-size: 20px;
+  margin-left: 25%;
+`;
+const StyledLabel = styled.label`
+  text-align: left;
+  margin-top: 5%;
+`;
+const StyledButton = styled.button`
+  height: 44.63px;
+  background: linear-gradient(180deg, #bc9cff 0%, #8ba4f9 100%);
+  border-radius: 22px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 20%;
+  margin-top: 6%;
 `;
 
 function TodoForm() {
@@ -40,13 +66,14 @@ function TodoForm() {
       account: user.email,
     });
     event.preventDefault();
+    document.createTodoForm.reset();
     console.log(event);
   };
 
   return (
     <div>
-      <form onSubmit={createTodo}>
-        <label>Name </label>
+      <StyledForm name="createTodoForm" onSubmit={createTodo}>
+        <StyledLabel>Name </StyledLabel>
         <input
           type="name"
           name="name"
@@ -54,7 +81,7 @@ function TodoForm() {
           onChange={(event) => setNewName(event.target.value)}
         ></input>
         <br />
-        <label>Due Date </label>
+        <StyledLabel>Due Date </StyledLabel>
         <input
           type="date"
           name="date"
@@ -62,10 +89,10 @@ function TodoForm() {
           onChange={(event) => setNewDate(event.target.value)}
         ></input>
         <br />
-        <button type="submit" onSubmit={createTodo}>
+        <StyledButton type="submit" onSubmit={createTodo}>
           Submit
-        </button>
-      </form>
+        </StyledButton>
+      </StyledForm>
     </div>
   );
 }

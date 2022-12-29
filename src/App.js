@@ -44,6 +44,7 @@ function App() {
   initializeApp(firebaseConfig);
   const location = useLocation();
   const [todo, setTodos] = useState("");
+  const [openMenu, setOpenMenu] = useState(false);
   const { isAuthenticated, createEmailUser, signInEmailUser, signUserOut } =
     useAuth();
   const history = useHistory();
@@ -58,6 +59,14 @@ function App() {
     }
     return;
   }, [isAuthenticated]);
+
+  const handleMenuClick = (e) => {
+    setOpenMenu(!openMenu);
+  };
+
+  useEffect(() => {
+    setOpenMenu(false);
+  }, [location]);
 
   return (
     <div>

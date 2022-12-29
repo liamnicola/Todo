@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { query, orderBy } from "firebase/firestore";
+import { query, orderBy, deleteDoc } from "firebase/firestore";
 
 import {
   doc,
@@ -14,7 +14,8 @@ function useTodo() {
   const ref = collection(db, "todos");
   const createTodo = (todo) => addDoc(ref, todo);
   const getTodos = () => getDocs(query(ref, orderBy("date", "asc")));
-  return { getTodos, createTodo };
+  const deleteTodo = (todo) => deleteDoc(ref, todo);
+  return { getTodos, createTodo, deleteTodo };
 }
 
 export default useTodo;
