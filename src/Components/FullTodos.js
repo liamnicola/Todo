@@ -6,7 +6,7 @@ import useAuth from "../services/firebase/useAuth";
 import { useHistory } from "react-router-dom";
 import useTodo from "../services/firebase/useTodo";
 import { ref } from "yup";
-import { collection, deleteDoc, getFirestore } from "firebase/firestore";
+import { collection, deleteDoc, getFirestore, doc } from "firebase/firestore";
 
 const StyledRootDiv = styled.div`
   background: rgb(81, 234, 93);
@@ -57,39 +57,6 @@ const StyledButton = styled.button`
   flex-direction: row;
 `;
 
-/*function timeLeft(due, props){
-    const date = new Date().getDate();
-    const countdown = due
-
-    FIND OUT HOW TO CONVERT DATES TO BE SUBTRACTED
-
-    time = date - countdown  THEN CONVERT TO DAYS 
-
-
-}
-*/
-/*const Todo = () => {
-  const history = useHistory();
-  const { user } = useAuth();
-  const { createTodo } = useTodo();
-  const handleSubmit = async (checkin) => {
-    const td = {
-      ...todo,
-      ...{
-        userId: user.uid,
-        userName: user.displayName || user.email,
-      },
-    };
-    try {
-      await createTodo(td);
-      history.push("/");
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  return <div></div>;
-}; */
-
 function FullTodos() {
   const db = getFirestore();
   const { user } = useAuth();
@@ -104,49 +71,52 @@ function FullTodos() {
     let todos = [];
     if (todoSnap.size) {
       todoSnap.forEach((doc) => {
-        todos.push({ ...doc.data() });
+        todos.push({ ...doc.data(), id: doc.id });
       });
       setTodos(todos);
     }
   };
 
-  const deleteTodo = (event) => {
-    deleteDoc(todoCollectionRef);
+  const deleteTodo = async (id) => {
+    const todoDoc = doc(db, "todos", id);
+    await deleteDoc(todoDoc);
   };
 
   useEffect(() => {
     getTodoData();
   }, []);
 
-  const sorted = [...todos].sort((a, b) => a.date - b.date);
-
-  /*const handleDelete = (id) => {
-    const deleteTd = deleteTodo();
-    deleteTd.delete(id);
-    console.log("delete", id);
-  };*/
+  //const sorted = [...todos].sort((a, b) => a.date - b.date);
 
   const handleEdit = (id) => {
     console.log("edit", id);
   };
-  /*const singleTodo = todos.map((e) => (
-    <StyledRootDiv>
-      <h3>{e.name}</h3> <br />
-      <p>{e.date}</p>
-    </StyledRootDiv>
-  ));*/
-  //const due = todo.map((e) => e.due);
-  // const due1 = moment(due);
-  //var date = moment();
-  //const countdown = moment(date).subtract(due1).toDate;
+
+  const amount = todos.length;
+  let displayAmount = 0;
+  if (amount > 0) {
+    displayAmount = amount + " Tasks Left To Complete:";
+  } else if (amount == 1) {
+    displayAmount = amount + " Task Left To Complete:";
+  } else {
+    displayAmount = " No Tasks Left To Complete";
+  }
+
   return (
     <div>
-      {sorted.map((e) => (
+      <h2>You have {displayAmount}</h2>
+      {todos.map((e) => (
         <StyledRootDiv>
-          <h3>{e.name}</h3> <br />
+          <h3>{e.name}</h3>
           <p>{e.date}</p>
           <StyledButton onClick={handleEdit}>Edit</StyledButton>
-          <StyledButton onClick={deleteTodo}>Delete</StyledButton>
+          <StyledButton
+            onClick={() => {
+              deleteTodo(e.id);
+            }}
+          >
+            Delete
+          </StyledButton>
         </StyledRootDiv>
       ))}
     </div>

@@ -47,9 +47,9 @@ function Header(props) {
             <Link to="/Create">Create Task</Link>
           </StyledLi>
           <StyledLi>
-            {user.displayName || user.email}
-
-            <span onClick={signUserOut}>(Logout)</span>
+            <span onClick={signUserOut}>
+              {user.displayName || user.email}(Logout)
+            </span>
           </StyledLi>
         </ul>
       </StyledNav>

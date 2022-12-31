@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Form from "../Components/LoginForm";
 import useAuth from "../services/firebase/useAuth";
@@ -10,7 +10,6 @@ const StyledWrapper = styled.div`
   min-height: 100vh;
   min-width: 100vw;
 `;
-
 
 const StyledHeading = styled.h2`
   text-align: center;
@@ -24,11 +23,13 @@ const StyledLink = styled(Link)`
 function Join(props) {
   const { createEmailUser, signInGoogleUser } = useAuth();
   const [severErrorMessage, setServerErrorMessage] = useState();
+  const navigate = useHistory();
 
   const handleEmailSubmit = async (data) => {
     try {
       const { email, password } = data;
       await createEmailUser(email, password);
+      navigate("/");
     } catch (e) {
       setServerErrorMessage(e.message);
     }
@@ -38,6 +39,7 @@ function Join(props) {
     try {
       if (method === "google") {
         await signInGoogleUser();
+        navigate("/");
       }
     } catch (error) {
       console.log("error");

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import useAuth from "../services/firebase/useAuth";
 import Form from "../Components/LoginForm";
@@ -11,7 +11,6 @@ const StyledWrapper = styled.div`
   min-height: 100vh;
   min-width: 100vw;
 `;
-
 
 const StyledHeading = styled.h2`
   text-align: center;
@@ -33,41 +32,44 @@ const StyledForm = styled.form`
 `;
 
 function Login(props) {
-	const [serverErrorMessage, setServerErrorMessage] = useState();
-	const { signInEmailUser, signInGoogleUser } = useAuth();
+  const [serverErrorMessage, setServerErrorMessage] = useState();
+  const { signInEmailUser, signInGoogleUser } = useAuth();
+  const navigate = useHistory();
 
-	const handleEmailSubmit = async (data) => {
-		try {
-			const { email, password } = data;
-			await signInEmailUser(email, password);
-		} catch (e) {
-			setServerErrorMessage(e.message);
-		}
-	};
+  const handleEmailSubmit = async (data) => {
+    try {
+      const { email, password } = data;
+      await signInEmailUser(email, password);
+      navigate("/");
+    } catch (e) {
+      setServerErrorMessage(e.message);
+    }
+  };
 
-	const handleSocialSubmit = async (method) => {
-		try {
-			if (method === "google") {
-				await signInGoogleUser();
-			}
-		} catch (error) {
-			console.log("error");
-		}
-	};
-	return (
-		<StyledWrapper>
-			<div>
-				<StyledHeading>Login With </StyledHeading>
-				<Form
-					buttonText="LOGIN"
-					serverErrorMessage={serverErrorMessage}
-					onEmailSubmit={handleEmailSubmit}
-					onSocialSubmit={handleSocialSubmit}
-				/>
-				<StyledLink to="/join"> Not a member - Join </StyledLink>
-			</div>
-		</StyledWrapper>
-	);
+  const handleSocialSubmit = async (method) => {
+    try {
+      if (method === "google") {
+        await signInGoogleUser();
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("error");
+    }
+  };
+  return (
+    <StyledWrapper>
+      <div>
+        <StyledHeading>Login With </StyledHeading>
+        <Form
+          buttonText="LOGIN"
+          serverErrorMessage={serverErrorMessage}
+          onEmailSubmit={handleEmailSubmit}
+          onSocialSubmit={handleSocialSubmit}
+        />
+        <StyledLink to="/join"> Not a member - Join </StyledLink>
+      </div>
+    </StyledWrapper>
+  );
 }
 
 export default Login;

@@ -86,7 +86,7 @@ function App() {
             </Protected>
 
             <Protected authenticated={isAuthenticated} exact path="/Schedule">
-              <Schedule todo={todo} />
+              <Schedule />
             </Protected>
             <Protected authenticated={isAuthenticated} exact path="/Create">
               <Create todo={todo} />

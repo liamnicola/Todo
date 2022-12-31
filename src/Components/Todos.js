@@ -147,8 +147,6 @@ function Todos() {
         <StyledRootDiv>
           <h3>{e.name}</h3> <br />
           <p>{e.date}</p>
-          <StyledButton onClick={handleEdit}>Edit</StyledButton>
-          <StyledButton onClick={deleteTodo}>Delete</StyledButton>
         </StyledRootDiv>
       ))}
     </div>
