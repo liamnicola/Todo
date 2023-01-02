@@ -19,7 +19,6 @@ const StyledRootDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  align-content: center;
   width: 50%;
   border-radius: 25px;
   font-size: 18pt;
@@ -28,9 +27,18 @@ const StyledRootDiv = styled.div`
   margin-bottom: 15px;
 `;
 
-const StyledP = styled.p`
-  align-items: center;
+const StyledH2 = styled.h2`
+  justify-content: center;
+  display: flex;
+  font-weight: bold;
+  margin-top: 20px;
 `;
+const StyledH3 = styled.h3`
+  justify-content: center;
+  display: flex;
+  margin-top: 0px;
+`;
+
 const StyledRootDivRed = styled.div`
   background-color: red;
   display: flex;
@@ -53,8 +61,27 @@ const StyledRootDivOrange = styled.div`
 `;
 
 const StyledButton = styled.button`
+  font-size: 15px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+`;
+const StyledButtonDiv = styled.div`
+  display: inline-block;
+  padding: 0;
+  border: 10px;
+  
+`;
+const StyledP = styled.p`
   display: flex;
-  flex-direction: row;
+  font-style: italic;
+  margin-top: 0px;
+  
+`;
+const StyledDate = styled.p`
+  display: flex;
+  font-style: italic
+  font-size: 20px;
 `;
 
 function FullTodos() {
@@ -80,6 +107,7 @@ function FullTodos() {
   const deleteTodo = async (id) => {
     const todoDoc = doc(db, "todos", id);
     await deleteDoc(todoDoc);
+    setTodos(todos);
   };
 
   useEffect(() => {
@@ -104,11 +132,13 @@ function FullTodos() {
 
   return (
     <div>
-      <h2>You have {displayAmount}</h2>
+      <StyledH2>You have {displayAmount}</StyledH2>
       {todos.map((e) => (
         <StyledRootDiv>
-          <h3>{e.name}</h3>
-          <p>{e.date}</p>
+          <StyledH2>{e.name}</StyledH2>
+          <StyledH3>{e.date}</StyledH3>
+          <StyledP>{e.note}</StyledP>
+          <StyledButtonDiv>
           <StyledButton onClick={handleEdit}>Edit</StyledButton>
           <StyledButton
             onClick={() => {
@@ -117,6 +147,7 @@ function FullTodos() {
           >
             Delete
           </StyledButton>
+          </StyledButtonDiv>
         </StyledRootDiv>
       ))}
     </div>

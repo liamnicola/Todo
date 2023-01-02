@@ -55,7 +55,17 @@ function TodoForm() {
 
   const [newName, setNewName] = useState("");
   const [newDate, setNewDate] = useState("");
+  const [newNote, setNewNote] = useState("");
   const todoCollectionRef = collection(db, "todos");
+
+  const {watch} = useForm({defaultValues: {note: "", name: "", date: ""}, });
+
+  const maxCharacters = 5;
+  const note = watch("note");
+  const [remainingCount, setRemainingCount] = useState(maxCharacters);
+  useEffect(() => {
+    setRemainingCount(maxCharacters - note.length);
+  }, [note]);
 
   const { user } = useAuth();
 
@@ -63,6 +73,7 @@ function TodoForm() {
     addDoc(todoCollectionRef, {
       name: newName,
       date: newDate,
+      note: newNote,
       account: user.email,
     });
     event.preventDefault();
@@ -87,6 +98,14 @@ function TodoForm() {
           name="date"
           placeholder="Please Enter a Date"
           onChange={(event) => setNewDate(event.target.value)}
+        ></input>
+        <br />
+        <StyledLabel>Notes</StyledLabel> <p>{remainingCount}</p>
+        <input
+          type="note"
+          name="note"
+          placeholder="Note"
+          onChange={(event) => setNewNote(event.target.value)}
         ></input>
         <br />
         <StyledButton type="submit" onSubmit={createTodo}>

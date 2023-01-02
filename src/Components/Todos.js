@@ -19,7 +19,6 @@ const StyledRootDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  align-content: center;
   width: 50%;
   border-radius: 25px;
   font-size: 18pt;
@@ -28,9 +27,18 @@ const StyledRootDiv = styled.div`
   margin-bottom: 15px;
 `;
 
-const StyledP = styled.p`
-  align-items: center;
+const StyledH2 = styled.h2`
+  justify-content: center;
+  display: flex;
+  font-weight: bold;
+  margin-top: 20px;
 `;
+const StyledH3 = styled.h3`
+  justify-content: center;
+  display: flex;
+  margin-top: 0px;
+`;
+
 const StyledRootDivRed = styled.div`
   background-color: red;
   display: flex;
@@ -53,8 +61,22 @@ const StyledRootDivOrange = styled.div`
 `;
 
 const StyledButton = styled.button`
+  font-size: 15px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+`;
+const StyledButtonDiv = styled.div`
+  display: inline-block;
+  padding: 0;
+  border: 10px;
+  
+`;
+const StyledP = styled.p`
   display: flex;
-  flex-direction: row;
+  font-style: italic;
+  margin-top: 0px;
+  
 `;
 
 /*function timeLeft(due, props){
@@ -145,9 +167,10 @@ function Todos() {
     <div>
       {limitSorted.map((e) => (
         <StyledRootDiv>
-          <h3>{e.name}</h3> <br />
-          <p>{e.date}</p>
-        </StyledRootDiv>
+        <StyledH2>{e.name}</StyledH2>
+        <StyledH3>{e.date}</StyledH3>
+        <StyledP>{e.note}</StyledP>
+      </StyledRootDiv>
       ))}
     </div>
   );
