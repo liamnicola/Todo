@@ -5,16 +5,13 @@ import moment from "moment";
 import useAuth from "../services/firebase/useAuth";
 import { useHistory } from "react-router-dom";
 import useTodo from "../services/firebase/useTodo";
-import { ref } from "yup";
-import { collection, deleteDoc, getFirestore, doc } from "firebase/firestore";
+import EditTodo from "./Edit";
+import { collection, deleteDoc, getFirestore, doc, where, getDocs, query, orderBy, ref } from "firebase/firestore";
+import { set } from "react-hook-form";
+import TestEdit from "./TestCreate";
 
 const StyledRootDiv = styled.div`
-  background: rgb(81, 234, 93);
-  background: linear-gradient(
-    0deg,
-    rgba(81, 234, 93, 1) 0%,
-    rgba(34, 195, 121, 1) 98%
-  );
+background: linear-gradient(to right top, #BF81A0, #8766A7, #5694A0);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -57,6 +54,7 @@ const StyledRootDivOrange = styled.div`
   align-items: center;
   width: 50%;
   border-radius: 25px;
+  border-color: white;
   font-size: 18pt;
 `;
 
@@ -65,7 +63,23 @@ const StyledButton = styled.button`
   margin-right: 10px;
   margin-left: 10px;
   margin-bottom: 5px;
+  border-radius: 12px;
+  cursor: pointer;
+  height: 30px;
+  border-width: 1px;  
 `;
+
+  /*
+  background: linear-gradient(180deg, #bc9cff 0%, #8ba4f9 100%);
+  border-radius: 22px;
+  color: white;
+  margin-top: 6%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  */
+
 const StyledButtonDiv = styled.div`
   display: inline-block;
   padding: 0;
@@ -84,47 +98,87 @@ const StyledDate = styled.p`
   font-size: 20px;
 `;
 
+
+
 function FullTodos() {
-  const db = getFirestore();
   const { user } = useAuth();
+  const currentUser = user ? user.email : null;
+  const db = getFirestore();
   const { getTodos } = useTodo();
   const history = useHistory();
+  const [todo, setTodo] = useState("")
   const [todos, setTodos] = useState([]);
+  const [editArea, setEditArea] = useState(false)
+  const [isEdit, setIsEdit] = useState(false)
+  const [tempId, setTempId] = useState("")
+
 
   const todoCollectionRef = collection(db, "todos");
-
+ 
   const getTodoData = async () => {
     const todoSnap = await getTodos();
+    //const q = getDocs(query(ref, orderBy("date", "asc"), ));
     let todos = [];
-    if (todoSnap.size) {
+    if (todoSnap.size > 0 ) {
       todoSnap.forEach((doc) => {
         todos.push({ ...doc.data(), id: doc.id });
-      });
+      }); 
       setTodos(todos);
     }
   };
+  
+ 
+  /*const todoCollectionRef = collection(db, "todos");
+  const getTodoData = async () => {
+    await currentUser
+    console.log(currentUser)
+    const q = getDocs(query(todoCollectionRef, where("account", "==", currentUser), ));
+    const todoSnap = await getDocs(q);
+    let todos = [];
+    if (todoSnap.size > 0 ) {
+      todoSnap.forEach((doc) => {
+        todos.push({ ...doc.data(), id: doc.id });
+      }); 
+      setTodos(todos);
+    }
+  };*/
 
   const deleteTodo = async (id) => {
     const todoDoc = doc(db, "todos", id);
     await deleteDoc(todoDoc);
     setTodos(todos);
+    getTodoData();
   };
+
+
+  const handleEditButton =  (todo) => {
+    setIsEdit(true);
+    setTempId(todo.id)
+    setTodos(todo.todo);
+    getTodoData();
+  }
+
+  const handleSubmitChange = () => {
+    /*updateDoc(ref(db, `/${tempId}`), {
+      todo,
+      id: tempId
+    })*/
+  }
 
   useEffect(() => {
     getTodoData();
   }, []);
 
-  //const sorted = [...todos].sort((a, b) => a.date - b.date);
+  const handleCancel = () => {
+    setIsEdit(false)
+  }
 
-  const handleEdit = (id) => {
-    console.log("edit", id);
-  };
 
   const amount = todos.length;
   let displayAmount = 0;
   if (amount > 0) {
     displayAmount = amount + " Tasks Left To Complete:";
-  } else if (amount == 1) {
+  } else if (amount === 1) {
     displayAmount = amount + " Task Left To Complete:";
   } else {
     displayAmount = " No Tasks Left To Complete";
@@ -133,16 +187,30 @@ function FullTodos() {
   return (
     <div>
       <StyledH2>You have {displayAmount}</StyledH2>
-      {todos.map((e) => (
+      {isEdit ? (
+        <div>
+          <input type ="text" placeholder="Edit Name"/>
+          <input type ="date" placeholder="Edit Date"/>
+          <input type ="text" placeholder="Edit Note"/>
+          <button onClick={handleSubmitChange}>Update</button>
+          <button  onClick={() => {
+              setIsEdit(false);
+              setTodo("");
+            }}
+          >Cancel</button>
+        </div>
+      ) : (
+        <p></p>
+      )} 
+      {todos.map((todo) => (
         <StyledRootDiv>
-          <StyledH2>{e.name}</StyledH2>
-          <StyledH3>{e.date}</StyledH3>
-          <StyledP>{e.note}</StyledP>
+          <StyledH2>{todo.name}</StyledH2>
+          <StyledH3>{todo.date}</StyledH3>
+          <StyledP>{todo.note}</StyledP>
           <StyledButtonDiv>
-          <StyledButton onClick={handleEdit}>Edit</StyledButton>
           <StyledButton
             onClick={() => {
-              deleteTodo(e.id);
+              deleteTodo(todo.id);
             }}
           >
             Delete

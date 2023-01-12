@@ -3,6 +3,7 @@ import {
 	signInWithEmailAndPassword, signInWithPopup, signOut
 } from "firebase/auth";
 import { useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
 
 
 function useAuth() {
@@ -16,8 +17,8 @@ function useAuth() {
 		onAuthStateChanged(auth, (user) => {
 			if (user) {
 				setIsAuthenticated(true);
-				console.log(user)
 				setUser(user);
+				Redirect("/Home")
 				return;
 			}
 			setIsAuthenticated(false);

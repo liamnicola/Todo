@@ -3,18 +3,14 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import moment from "moment";
 import useAuth from "../services/firebase/useAuth";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import useTodo from "../services/firebase/useTodo";
 import { ref } from "yup";
 import { collection, deleteDoc, getFirestore } from "firebase/firestore";
+//#c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1
 
 const StyledRootDiv = styled.div`
-  background: rgb(81, 234, 93);
-  background: linear-gradient(
-    0deg,
-    rgba(81, 234, 93, 1) 0%,
-    rgba(34, 195, 121, 1) 98%
-  );
+background: linear-gradient(to right top, #BF81A0, #8766A7, #5694A0);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,6 +23,7 @@ const StyledRootDiv = styled.div`
   margin-bottom: 15px;
 `;
 
+
 const StyledH2 = styled.h2`
   justify-content: center;
   display: flex;
@@ -34,44 +31,15 @@ const StyledH2 = styled.h2`
   margin-top: 20px;
 `;
 const StyledH3 = styled.h3`
-  justify-content: center;
   display: flex;
+  justify-content: center;
   margin-top: 0px;
+  a:-webkit-any-link {
+    text-decoration: underline;
+    color: white;
+  }
 `;
 
-const StyledRootDivRed = styled.div`
-  background-color: red;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  border-radius: 25px;
-  font-size: 18pt;
-`;
-const StyledRootDivOrange = styled.div`
-  background-color: orange;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  border-radius: 25px;
-  font-size: 18pt;
-`;
-
-const StyledButton = styled.button`
-  font-size: 15px;
-  margin-right: 10px;
-  margin-left: 10px;
-  margin-bottom: 5px;
-`;
-const StyledButtonDiv = styled.div`
-  display: inline-block;
-  padding: 0;
-  border: 10px;
-  
-`;
 const StyledP = styled.p`
   display: flex;
   font-style: italic;
@@ -141,30 +109,38 @@ function Todos() {
   }, []);
 
   const sorted = [...todos].sort((a, b) => a.date - b.date);
-
-  /*const handleDelete = (id) => {
-    const deleteTd = deleteTodo();
-    deleteTd.delete(id);
-    console.log("delete", id);
-  };*/
-
-  const handleEdit = (id) => {
-    console.log("edit", id);
-  };
-
   const limitSorted = sorted.slice(0, 3);
-  /*const singleTodo = todos.map((e) => (
-    <StyledRootDiv>
-      <h3>{e.name}</h3> <br />
-      <p>{e.date}</p>
-    </StyledRootDiv>
-  ));*/
-  //const due = todo.map((e) => e.due);
-  // const due1 = moment(due);
-  //var date = moment();
-  //const countdown = moment(date).subtract(due1).toDate;
+  const number = limitSorted.length;
+
+  /*const days = limitSorted.map((e) => e.date)
+  console.log(days)
+  const test = days.getDay()
+  console.log(test)
+
+  function daysBetween(date){
+    const currentDate = new Date();
+    //let todoDate = todos.map((e) => (e.name))
+    //console.log(todoDate)
+  
+    let daysLeft = date.getDay() - currentDate
+    console.log(daysLeft)
+  }*/
+
+
+  function textDisplay(number){
+    if(number === 0 ) {
+      return (<h3>You currently have no tasks,{" "}
+      <Link to="/Create">Create tasks here!</Link>
+      </h3>
+      )
+    } else if (number > 0){
+      return <h1>Tasks to start:</h1>
+    }
+  }
+
   return (
     <div>
+      <StyledH3>{textDisplay(number)}</StyledH3>
       {limitSorted.map((e) => (
         <StyledRootDiv>
         <StyledH2>{e.name}</StyledH2>

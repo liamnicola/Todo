@@ -13,7 +13,6 @@ function Home(props) {
     <div>
       <h1>{date}</h1>
       <Time />
-      <h1>Tasks to Start:</h1>
 
       <Todos todo={todo} />
     </div>

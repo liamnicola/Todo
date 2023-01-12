@@ -26,52 +26,50 @@ const StyledSocialIconArea = styled.div`
       height: 50px;
     }
   `;
-
+  const StyledButton = styled.button`
+  height: 50px;
+  width: 200px;
+  background: linear-gradient(to right top, #BF81A0, #8766A7, #5694A0  );
+  border-radius: 22px;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  font-size: 14pt;
+`;
 
 
 function LoginForm(props) {
   const { buttonText, onEmailSubmit, onSocialSubmit, serverErrorMessage } = props;
-  const [displayEmail, setDisplayEmail] = useState(false);
-
-  const loginFormSchema = yup
+  const schema = yup
     .object({
       email: yup
         .string()
-        .email("please enter a valid email")
-        .required("please enter a email"),
+        .email("please enter an email that is valid")
+        .required("please enter an email"),
       password: yup
         .string()
         .required("please enter a password")
-        .min(5, "password must be 5 characters long"),
+        .min(5, "password must a minimum of 5 characters"),
     })
     .required();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(loginFormSchema),
+    resolver: yupResolver(schema),
   });
-
- 
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    setDisplayEmail(!displayEmail);
-  };
-
   const errorBorder = (error) => error && { borderColor: "red" };
   return (
     <React.Fragment>
       <StyledSocialIconArea>
-        <img src={google} alt="#" onClick={() => onSocialSubmit("google")} />
+        <img src={google}onClick={() => onSocialSubmit("google")} />
       </StyledSocialIconArea>
       <StyledHeading> OR </StyledHeading>
 
-      {!displayEmail && <Button onClick={handleClick} text="Email" />}
-
-      {displayEmail && (
         <form onSubmit={handleSubmit(onEmailSubmit)}>
           <p>
             <label> Email </label>
@@ -96,9 +94,9 @@ function LoginForm(props) {
             <StyledErrorLabel>{errors?.password?.message}</StyledErrorLabel>
           </p>
           <StyledErrorLabel> {serverErrorMessage} </StyledErrorLabel>
-          <Button text={buttonText} type="submit" />
+          <StyledButton text={buttonText} type="submit">Submit</StyledButton>
         </form>
-      )}
+      
     </React.Fragment>
   );
 }

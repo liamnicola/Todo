@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app";
 import React, { useEffect, useState } from "react";
+import useAuth from "./services/firebase/useAuth";
 import {
   Switch,
   Route,
@@ -10,11 +10,11 @@ import {
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./config/globalStyles";
 import theme from "./config/theme.js";
+import { initializeApp } from "firebase/app";
 import firebaseConfig from "./config/firebase";
-import useAuth from "./services/firebase/useAuth";
 import Header from "./Components/Header";
+import Landing from "./Views/Landing";
 import Home from "./Views/Home";
-import Profile from "./Views/Profile";
 import Schedule from "./Views/Schedule";
 import Create from "./Views/Create";
 import Login from "./Views/Login";
@@ -30,7 +30,7 @@ function Protected({ authenticated, children, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: "/",
               state: { from: location },
             }}
           />
@@ -41,24 +41,20 @@ function Protected({ authenticated, children, ...rest }) {
 }
 
 function App() {
-  initializeApp(firebaseConfig);
   const location = useLocation();
-  const [todo, setTodos] = useState("");
+  const history = useHistory();
+  console.log(location)
+  initializeApp(firebaseConfig);
   const [openMenu, setOpenMenu] = useState(false);
   const { isAuthenticated, createEmailUser, signInEmailUser, signUserOut } =
     useAuth();
-  const history = useHistory();
-  const hideHeader =
-    location.pathname === "/join" || location.pathname === "/login" ? null : (
-      <Header />
-    );
   useEffect(() => {
     if (isAuthenticated) {
-      history.push(history.location.state.from.pathname);
-      return;
+      history.push("/Home");
     }
     return;
   }, [isAuthenticated]);
+ 
 
   const handleMenuClick = (e) => {
     setOpenMenu(!openMenu);
@@ -68,33 +64,38 @@ function App() {
     setOpenMenu(false);
   }, [location]);
 
+
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {hideHeader}
+        
         <GlobalStyles />
         <div>
-          <Route path="/join">
-            <Join />
+        {location.pathname !== "/join" && location.pathname !== "/login" && location.pathname !== "/" &&(
+          <Header onClick={handleMenuClick} open={openMenu} signOut={signUserOut} />
+        )}
+          <Route exact path="/">
+            <Landing />
           </Route>
-          <Route path="/login">
-            <Login />
+          <Route exact path="/join">
+            <Join createEmailUser={createEmailUser}/>
           </Route>
+          <Route exact path="/login">
+            <Login signInEmailUser={signInEmailUser}/>
+          </Route>
+
           <Switch>
-            <Protected authenticated={isAuthenticated} exact path="/">
+            <Protected authenticated={isAuthenticated} exact path="/Home">
               <Home />
             </Protected>
-
             <Protected authenticated={isAuthenticated} exact path="/Schedule">
               <Schedule />
             </Protected>
             <Protected authenticated={isAuthenticated} exact path="/Create">
-              <Create todo={todo} />
-            </Protected>
-            <Protected authenticated={isAuthenticated} exact path="/">
-              <Profile />
+              <Create />
             </Protected>
           </Switch>
+
         </div>
       </ThemeProvider>
     </div>

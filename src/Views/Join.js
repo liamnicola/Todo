@@ -7,18 +7,24 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
   min-height: 100vh;
   min-width: 100vw;
+  a:-webkit-any-link {
+    text-decoration: underline;
+    color: white;
+  }
 `;
 
 const StyledHeading = styled.h2`
   text-align: center;
   margin-top: 2%;
-  color: ${({ theme }) => theme.colors.purple};
 `;
 const StyledLink = styled(Link)`
   text-align: center;
 `;
+
+
 
 function Join(props) {
   const { createEmailUser, signInGoogleUser } = useAuth();

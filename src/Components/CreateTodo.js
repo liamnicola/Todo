@@ -12,16 +12,17 @@ import {
   getDocs,
   getFirestore,
 } from "firebase/firestore";
-import { create } from "yup/lib/Reference";
 
-const StyledForm = styled.form`
-  background: rgb(63, 94, 251);
+/*rgb(63, 94, 251);
   background: radial-gradient(
     circle,
     rgba(63, 94, 251, 1) 0%,
     rgba(252, 70, 107, 1) 100%
-  );
-  display: block;
+  );*/
+
+const StyledForm = styled.form`
+  background: #232222;
+  display: grid;
   justify-content: center;
   align-items: center;
   align-content: center;
@@ -29,25 +30,34 @@ const StyledForm = styled.form`
   padding: 0.5rem 0.8rem 0.5rem 0.8rem;
   margin: 0.9vw 0;
   border: 0;
-  border-radius: 5px;
   font-size: 20px;
   margin-left: 25%;
+  border-radius: 25px;
 `;
 const StyledLabel = styled.label`
-  text-align: left;
-  margin-top: 5%;
+  text-align: center;
+  margin-bottom: 10px;
+  
 `;
+
+const StyledInput = styled.input`
+  text-align: center;
+  height: 25px;
+  border-radius: 25px;
+
+`;
+
 const StyledButton = styled.button`
-  height: 44.63px;
-  background: linear-gradient(180deg, #bc9cff 0%, #8ba4f9 100%);
+  height: 50px;
+  background: linear-gradient(to right top, #BF81A0, #8766A7, #5694A0  );
   border-radius: 22px;
   color: white;
-  display: flex;
+  cursor: pointer;
+  margin-top: 6%;
+  text-align: center;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
-  width: 20%;
-  margin-top: 6%;
+  align-content: center;
 `;
 
 function TodoForm() {
@@ -58,7 +68,14 @@ function TodoForm() {
   const [newNote, setNewNote] = useState("");
   const todoCollectionRef = collection(db, "todos");
 
-  const {watch} = useForm({defaultValues: {note: "", name: "", date: ""}, });
+  const formSchema = yup.object({
+    name: yup.string().required("Name is Required"),
+    date: yup.date().required("A date is required"),
+    note: yup.string()
+  }).required();
+  
+
+const {register, formState: { errors }, watch} = useForm({resolver: yupResolver(formSchema),defaultValues: {note: "", name: "", date: ""} ,});
 
   const maxCharacters = 5;
   const note = watch("note");
@@ -68,45 +85,64 @@ function TodoForm() {
   }, [note]);
 
   const { user } = useAuth();
+  
 
-  const createTodo = (event) => {
-    addDoc(todoCollectionRef, {
+  const createTodo = async (event) => {
+    let formData = {
       name: newName,
       date: newDate,
       note: newNote,
       account: user.email,
+    }
+    const Valid = await formSchema.isValid(formData)
+    if(Valid ==true){
+    addDoc(todoCollectionRef, {
+      ...formData
     });
+    console.log(Valid)
     event.preventDefault();
     document.createTodoForm.reset();
-    console.log(event);
+    alert("Created")
+  } else {
+    alert("All Data must be entered")
+    event.preventDefault();
+  }
   };
 
   return (
     <div>
       <StyledForm name="createTodoForm" onSubmit={createTodo}>
         <StyledLabel>Name </StyledLabel>
-        <input
+        <StyledInput
           type="name"
           name="name"
           placeholder="Please Enter a Name"
+          {...register("name")}
           onChange={(event) => setNewName(event.target.value)}
-        ></input>
+        ></StyledInput>
+        <label>{errors.name &&errors.name.message}</label>
         <br />
         <StyledLabel>Due Date </StyledLabel>
-        <input
+        <StyledInput
           type="date"
           name="date"
+          min={new Date().toISOString().split('T')[0]}
           placeholder="Please Enter a Date"
+          {...register("date")}
           onChange={(event) => setNewDate(event.target.value)}
-        ></input>
+        ></StyledInput>
+        <label>{errors.date&&errors.date.message}</label>
         <br />
-        <StyledLabel>Notes</StyledLabel> <p>{remainingCount}</p>
-        <input
+        <StyledLabel>Notes </StyledLabel>
+        <StyledInput 
           type="note"
           name="note"
           placeholder="Note"
+          maxLength={50}
+          {...register("note")}
           onChange={(event) => setNewNote(event.target.value)}
-        ></input>
+        ></StyledInput>
+        <label>{errors.note}</label>
         <br />
         <StyledButton type="submit" onSubmit={createTodo}>
           Submit
@@ -115,45 +151,5 @@ function TodoForm() {
     </div>
   );
 }
-
-/*const CreateTodo = (props) => {
-  const { onSubmit, todo } = props;
-  const [Todos, setTodos] = useState(0);
-  const schema = yup.object({
-    name: yup.string().required("you must enter a name"),
-    date: yup.string().required("date is required"),
-  });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm({ resolver: yupResolver(schema) });
-
-  //const formValues = watch();
-  let newTodo = {
-    name: "",
-    date: "",
-  };
-  //setTodos([newTodo]);
-
-  const onFormSubmit = (data) => {
-    onSubmit({ ...data, ...todo });
-  };
-  return (
-    <div>
-      <form onSubmit={handleSubmit(onFormSubmit)}>
-        <label>Name </label> <br />
-        <input {...register("name", { required: true })} />
-        <p>{errors.name?.type === "required" && "Todo name Required"}</p>
-        <label>Due Date </label> <br />
-        <input type="date" {...register("date", { required: true })} />
-        <p>{errors.date?.type === "required" && "Date is Required"}</p>
-        <input type="submit" />
-      </form>
-    </div>
-  );
-}; */
 
 export default TodoForm;
