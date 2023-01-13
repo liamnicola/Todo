@@ -88,7 +88,7 @@ The final phase of this method allowed users to test the application I was creat
 |---------|-----------|----------|
 | Login (register if no account) | Yes | X |	
 | Navigate to the create page |	Yes	| X |
-| Create two tasks |	Yes |	Once creating a task, user could be directed to where its displayed |
+| Create two tasks |	Yes |	X |
 | Delete one task in Schedule page | Yes | X |
 | View task in the home page | Yes | X |
 | Logout |	Yes	| X | 
