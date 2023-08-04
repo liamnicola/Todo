@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import moment from "moment";
-import useAuth from "../services/firebase/useAuth";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useTodo from "../services/firebase/useTodo";
-import { ref } from "yup";
-import { collection, deleteDoc, getFirestore } from "firebase/firestore";
 //#c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1
 
 const StyledRootDiv = styled.div`
@@ -21,6 +17,17 @@ background: linear-gradient(to right top, #BF81A0, #8766A7, #5694A0);
   position: relative;
   margin-left: 25%;
   margin-bottom: 15px;
+`;
+
+const StyledA = styled.a`
+cursor: pointer;
+text-decoration: none;
+color: white;
+width: 100%;
+a:hover{
+  background:black;
+  border-radius: 250px;
+}
 `;
 
 
@@ -42,8 +49,8 @@ const StyledH3 = styled.h3`
 
 const StyledP = styled.p`
   display: flex;
-  font-style: italic;
-  margin-top: 0px;
+  justify-content: center;
+  text-align: center;
   
 `;
 
@@ -81,13 +88,8 @@ const StyledP = styled.p`
 }; */
 
 function Todos() {
-  const db = getFirestore();
-  const { user } = useAuth();
   const { getTodos } = useTodo();
-  const history = useHistory();
   const [todos, setTodos] = useState([]);
-
-  const todoCollectionRef = collection(db, "todos");
 
   const getTodoData = async () => {
     const todoSnap = await getTodos();
@@ -98,10 +100,6 @@ function Todos() {
       });
       setTodos(todos);
     }
-  };
-
-  const deleteTodo = (event) => {
-    deleteDoc(todoCollectionRef);
   };
 
   useEffect(() => {
@@ -142,10 +140,13 @@ function Todos() {
     <div>
       <StyledH3>{textDisplay(number)}</StyledH3>
       {limitSorted.map((e) => (
+        
         <StyledRootDiv>
-        <StyledH2>{e.name}</StyledH2>
-        <StyledH3>{e.date}</StyledH3>
-        <StyledP>{e.note}</StyledP>
+          <StyledA href="/Schedule">
+          <StyledH2>{e.name}</StyledH2>
+          <StyledH3>{e.date}</StyledH3>
+          <StyledP>{e.note}</StyledP>
+          </StyledA>
       </StyledRootDiv>
       ))}
     </div>

@@ -1,7 +1,5 @@
-import { Firestore } from "firebase/firestore";
 import React, {useState} from "react";
 import { updateDoc, getFirestore, collection } from "firebase/firestore";
-import useTodo from "../services/firebase/useTodo";
 
 function EditTodo( ID, setEditArea){
     console.log(ID)

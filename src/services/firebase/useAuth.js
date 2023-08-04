@@ -3,7 +3,6 @@ import {
 	signInWithEmailAndPassword, signInWithPopup, signOut
 } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
 
 
 function useAuth() {
@@ -13,12 +12,10 @@ function useAuth() {
 	const googleProvider = new GoogleAuthProvider();
 
 	useEffect(() => {
-
 		onAuthStateChanged(auth, (user) => {
 			if (user) {
 				setIsAuthenticated(true);
 				setUser(user);
-				Redirect("/Home")
 				return;
 			}
 			setIsAuthenticated(false);

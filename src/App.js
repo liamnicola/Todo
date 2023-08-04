@@ -43,15 +43,12 @@ function Protected({ authenticated, children, ...rest }) {
 function App() {
   const location = useLocation();
   const history = useHistory();
-  console.log(location)
   initializeApp(firebaseConfig);
   const [openMenu, setOpenMenu] = useState(false);
-  const { isAuthenticated, createEmailUser, signInEmailUser, signUserOut } =
-    useAuth();
+  const { isAuthenticated, createEmailUser, signInEmailUser, signUserOut , user} =useAuth();
   useEffect(() => {
     if (isAuthenticated) {
-      history.push("/Home");
-    }
+      history.push("/home");    }
     return;
   }, [isAuthenticated]);
  

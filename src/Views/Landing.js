@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import useAuth from "../services/firebase/useAuth";
-import Form from "../Components/LoginForm";
 
 const StyledRootDiv = styled.div`
   display: flex;

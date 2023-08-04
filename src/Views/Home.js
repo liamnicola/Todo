@@ -1,7 +1,4 @@
 import React from "react";
-import styled from "styled-components";
-import { useState, useEffect } from "react-router-dom";
-import PropTypes from "prop-types";
 import Todos from "../Components/Todos";
 import moment from "moment";
 import Time from "../Components/Time";

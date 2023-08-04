@@ -1,7 +1,7 @@
 //import PropTypes from "prop-types";
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
-import styled, { ThemeConsumer } from "styled-components";
+import styled from "styled-components";
 import useAuth from "../services/firebase/useAuth";
 import PropTypes from "prop-types";
 
@@ -31,6 +31,7 @@ const StyledBurgerMenu = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    z-index: 1;
     hr {
       margin: 10px 0 0 10px;
       width: 25%;
@@ -63,7 +64,7 @@ const StyledMenuWrapper = styled.div`
     height: 100vh;
     width: 304px;
     background: #282828;;
-    position: absolute;
+    position: fixed;
     padding-top: 1%;
     border-style: solid;
     border-color:#8766A7;
@@ -74,6 +75,7 @@ const StyledMenuWrapper = styled.div`
     top: 0;
     left: 0;
     background-color: #090909;
+    z-index: 1;
   `;
 
 

@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import google from "../assets/google.png";
-import Button from "../Components/Button";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -66,7 +65,7 @@ function LoginForm(props) {
   return (
     <React.Fragment>
       <StyledSocialIconArea>
-        <img src={google}onClick={() => onSocialSubmit("google")} />
+        <img alt="google" src={google}onClick={() => onSocialSubmit("google")} />
       </StyledSocialIconArea>
       <StyledHeading> OR </StyledHeading>
 

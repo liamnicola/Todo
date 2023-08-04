@@ -12,6 +12,9 @@ import {
   getDocs,
   getFirestore,
 } from "firebase/firestore";
+import {
+  useHistory
+} from "react-router-dom";
 
 /*rgb(63, 94, 251);
   background: radial-gradient(
@@ -62,7 +65,7 @@ const StyledButton = styled.button`
 
 function TodoForm() {
   const db = getFirestore();
-
+  const history = useHistory();
   const [newName, setNewName] = useState("");
   const [newDate, setNewDate] = useState("");
   const [newNote, setNewNote] = useState("");
@@ -95,14 +98,14 @@ const {register, formState: { errors }, watch} = useForm({resolver: yupResolver(
       account: user.email,
     }
     const Valid = await formSchema.isValid(formData)
-    if(Valid ==true){
+    if(Valid === true){
     addDoc(todoCollectionRef, {
       ...formData
     });
     console.log(Valid)
     event.preventDefault();
     document.createTodoForm.reset();
-    alert("Created")
+    history.push("/Schedule")
   } else {
     alert("All Data must be entered")
     event.preventDefault();
