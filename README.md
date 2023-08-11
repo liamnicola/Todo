@@ -4,7 +4,7 @@
 ## Liam Nicola - Q15065049 
 
 ### Hosted Website - https://web-app-271a0.web.app/
-### Github link: https://github.com/liamnicola/webappAE2.git
+### Github link: https://github.com/liamnicola/Todo.git
 
 # Contents
 1) [Scripts](Scripts)
